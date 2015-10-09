@@ -37999,9 +37999,105 @@ var React = require('react');
 
 var AuthButton = require('../components/user/login/AuthButton');
 
+var UserItem = require('../components/list/user/UserItem');
+
+var UsersList = require('../components/list/user/UsersList');
+
+var SabirData = require('../data/SabirData');
+
 var App = React.createClass({displayName: "App",
     getDefaultProps: function () {
-        return {}
+        return {
+        }
+    },
+
+    getInitialState: function () {
+        return {
+            users: []
+        }
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentDidMount: function () {
+        this.setState({
+            users: SabirData.USERS_LIST
+        });
+    },
+
+    componentStyle: {
+        placeholder: {
+            padding: '10px'
+        }
+    },
+
+
+    getModifiedList: function(name){
+        var list = this.state.users;
+        for (var i in list){
+            list[i].name = name;
+        }
+        return list;
+    },
+
+    onItemClick: function(index, name){
+        var newList = this.getModifiedList(name);
+        this.setState({
+            users: newList
+        });
+    },
+
+    render: function () {
+        var users = SabirData.USERS_LIST;
+
+        return (
+            React.createElement("div", {style: this.componentStyle.placeholder}, 
+
+                React.createElement("div", null, 
+
+                    React.createElement("p", null, 
+                        "Это кнопка для авторизации", 
+                        React.createElement(AuthButton, {buttonClassName: 'ui inverted blue button'})
+                    )
+
+                ), 
+
+
+                React.createElement("div", null, 
+                    React.createElement(UsersList, {onItemClick: this.onItemClick, users: this.state.users})
+                )
+
+            )
+        );
+    }
+
+});
+
+React.render(
+    React.createElement(App, null),
+    document.getElementById('main')
+);
+
+},{"../components/list/user/UserItem":235,"../components/list/user/UsersList":236,"../components/user/login/AuthButton":237,"../data/SabirData":243,"react":233}],235:[function(require,module,exports){
+/**
+ * Created by sabir on 09.10.15.
+ */
+var React = require('react');
+
+var UserItem = React.createClass({displayName: "UserItem",
+    getDefaultProps: function () {
+        return {
+            name: 'NoName',
+            comment: 'NoComment',
+            avatar: 'http://searchlightoffashion.com/templates/Shab/dleimages/noavatar.png',
+            commentColor: 'black',
+            onItemSuperPuperClick: function(name){
+                console.log(name);
+                alert(name);
+            }
+        }
     },
 
     getInitialState: function () {
@@ -38018,24 +38114,65 @@ var App = React.createClass({displayName: "App",
 
     componentStyle: {
         placeholder: {
-            padding: '10px'
+            borderBottom: '1px solid lightgrey',
+            height: '50px',
+            width: '100%',
+            cursor: 'pointer'
+        },
+
+        avatarPlaceholder: {
+            display: 'inline-block',
+            height: '100%'
+        },
+
+        avatar: {
+            height: '100%'
+        },
+
+        comment: {
+            fontSize: '11px',
+            lineHeight: '11px'
+        },
+
+        name: {
+            fontWeight: 'bold',
+            fontSize: '14px'
+        },
+
+        userInfoPlaceholder: {
+            display: 'inline-block',
+            marginLeft: '5px',
+            verticalAlign: 'top',
+            maxWidth: '100px'
         }
+
+
+    },
+
+    onItemClick: function(){
+        this.props.onItemSuperPuperClick(this.props.name);
     },
 
     render: function () {
 
         return (
-            React.createElement("div", {style: this.componentStyle.placeholder}, 
+            React.createElement("div", {style: this.componentStyle.placeholder, onClick: this.onItemClick}, 
 
-                React.createElement("div", null, 
+                React.createElement("div", {style: this.componentStyle.avatarPlaceholder}, 
+                    React.createElement("img", {style: this.componentStyle.avatar, src: this.props.avatar})
+                ), 
 
-                    React.createElement("p", null, 
-                        "Это кнопка для авторизации", 
-                        React.createElement(AuthButton, {buttonClassName: 'ui inverted violet button'})
+                React.createElement("div", {style: this.componentStyle.userInfoPlaceholder}, 
+
+                    React.createElement("div", {style: this.componentStyle.name}, 
+                        this.props.name
+                    ), 
+
+                    React.createElement("div", {style: this.componentStyle.comment}, 
+                        this.props.comment
                     )
 
                 )
-
 
             )
         );
@@ -38043,12 +38180,74 @@ var App = React.createClass({displayName: "App",
 
 });
 
-React.render(
-    React.createElement(App, null),
-    document.getElementById('main')
-);
+module.exports = UserItem;
 
-},{"../components/user/login/AuthButton":235,"react":233}],235:[function(require,module,exports){
+},{"react":233}],236:[function(require,module,exports){
+/**
+ * Created by sabir on 09.10.15.
+ */
+
+var React = require('react');
+var UserItem = require('./UserItem');
+
+var UsersList = React.createClass({displayName: "UsersList",
+    getDefaultProps: function () {
+        return {
+            users: [],
+            onItemClick: function(index, name){
+                alert(index);
+            }
+        }
+    },
+
+    getInitialState: function () {
+        return {}
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentDidMount: function () {
+
+    },
+
+    componentStyle: {
+        placeholder: {
+            width: '190px',
+            borderLeft: '1px solid lightgrey'
+        }
+    },
+
+    onItemClick: function(index, name){
+        console.log(index, name);
+        this.props.onItemClick(index, name);
+    },
+
+    render: function () {
+        var list = this.props.users;
+
+        return (
+            React.createElement("div", {style: this.componentStyle.placeholder}, 
+                list.map(function(u, i){
+                    var name = u.name;
+                    var comment = u.comment;
+                    var avatar = u.avatar;
+                    var key = 'user-item-' + i;
+                    var boundClick = this.onItemClick.bind(this, i);
+                    return (
+                        React.createElement(UserItem, {onItemSuperPuperClick: boundClick, key: key, name: name, comment: comment, avatar: avatar})
+                    );
+                }, this)
+            )
+        );
+    }
+
+});
+
+module.exports = UsersList;
+
+},{"./UserItem":235,"react":233}],237:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38119,7 +38318,7 @@ var AuthButton = React.createClass({displayName: "AuthButton",
 
 module.exports = AuthButton;
 
-},{"./AuthOverlay":237,"react":233}],236:[function(require,module,exports){
+},{"./AuthOverlay":239,"react":233}],238:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38257,7 +38456,7 @@ var AuthForm = React.createClass({displayName: "AuthForm",
 
 module.exports = AuthForm;
 
-},{"./LoginForm":238,"./SignupForm":239,"react":233}],237:[function(require,module,exports){
+},{"./LoginForm":240,"./SignupForm":241,"react":233}],239:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38354,7 +38553,7 @@ var AuthOverlay = React.createClass({displayName: "AuthOverlay",
 
 module.exports = AuthOverlay;
 
-},{"./AuthForm":236,"object-assign":3,"react":233}],238:[function(require,module,exports){
+},{"./AuthForm":238,"object-assign":3,"react":233}],240:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38516,7 +38715,7 @@ var LoginForm = React.createClass({displayName: "LoginForm",
 
 module.exports = LoginForm;
 
-},{"../../../mixins/LoginMixin":241,"react":233}],239:[function(require,module,exports){
+},{"../../../mixins/LoginMixin":244,"react":233}],241:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38748,18 +38947,52 @@ var SignupForm = React.createClass({displayName: "SignupForm",
 
 module.exports = SignupForm;
 
-},{"../../../mixins/LoginMixin":241,"react":233}],240:[function(require,module,exports){
+},{"../../../mixins/LoginMixin":244,"react":233}],242:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
+
 var Constants = {
     PARSE_APP_ID: 'h1QhtsSjeoyQSa8RDQBDPvgbnI7Ix6nadHTsepwN',
     PARSE_JS_KEY: 'Ci34OXCgbv7TuVOiUJFOmoSwULbC7JRnxvFaT1ZI',
+    PARSE_REST_API_KEY: ''
 }
 
 module.exports = Constants;
 
-},{}],241:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
+/**
+ * Created by sabir on 09.10.15.
+ */
+
+var SabirData = {
+
+    USERS_LIST: [
+        {
+            name: 'Sabir',
+            comment: 'Sabir added 2 photos to his album',
+            avatar: 'https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/c0.0.100.100/p100x100/10291056_721094314624073_2169467878167533394_n.jpg?oh=b9b86c9bee2e6d47761c9bede2ad5fd8&oe=56D0705C'
+        },
+        {
+            name: 'Ivan',
+            comment: 'Went offline',
+            avatar: 'https://scontent.xx.fbcdn.net/hprofile-xfa1/v/t1.0-1/c44.44.549.549/s320x320/164690_601451039884915_1215879134_n.jpg?oh=2a93bd89f83c33e709003dab77358a1c&oe=56A00451'
+        },
+        {
+            name: 'Vasya',
+            comment: 'Making fun',
+            avatar: 'https://scontent.xx.fbcdn.net/hprofile-xap1/v/t1.0-1/p320x320/10898027_798245653575861_8044211609230572220_n.jpg?oh=85f3b3a70c623d4f2dd2e72bb17921a1&oe=569E3662'
+        },{
+            name: 'Anton'
+        }
+    ]
+
+
+}
+
+module.exports = SabirData;
+
+},{}],244:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -38837,7 +39070,7 @@ var LoginMixin = {
 
 module.exports = LoginMixin;
 
-},{"./ParseMixin":242,"parse":4,"react":233}],242:[function(require,module,exports){
+},{"./ParseMixin":245,"parse":4,"react":233}],245:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -38943,4 +39176,4 @@ var ParseMixin = {
 
 module.exports = ParseMixin;
 
-},{"../constants/Constants":240,"jquery":2,"parse":4}]},{},[234]);
+},{"../constants/Constants":242,"jquery":2,"parse":4}]},{},[234]);

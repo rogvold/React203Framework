@@ -5,13 +5,22 @@ var React = require('react');
 
 var AuthButton = require('../components/user/login/AuthButton');
 
+var UserItem = require('../components/list/user/UserItem');
+
+var UsersList = require('../components/list/user/UsersList');
+
+var SabirData = require('../data/SabirData');
+
 var App = React.createClass({
     getDefaultProps: function () {
-        return {}
+        return {
+        }
     },
 
     getInitialState: function () {
-        return {}
+        return {
+            users: []
+        }
     },
 
     componentWillReceiveProps: function (nextProps) {
@@ -19,7 +28,9 @@ var App = React.createClass({
     },
 
     componentDidMount: function () {
-
+        this.setState({
+            users: SabirData.USERS_LIST
+        });
     },
 
     componentStyle: {
@@ -28,7 +39,24 @@ var App = React.createClass({
         }
     },
 
+
+    getModifiedList: function(name){
+        var list = this.state.users;
+        for (var i in list){
+            list[i].name = name;
+        }
+        return list;
+    },
+
+    onItemClick: function(index, name){
+        var newList = this.getModifiedList(name);
+        this.setState({
+            users: newList
+        });
+    },
+
     render: function () {
+        var users = SabirData.USERS_LIST;
 
         return (
             <div style={this.componentStyle.placeholder}>
@@ -37,11 +65,15 @@ var App = React.createClass({
 
                     <p>
                         Это кнопка для авторизации
-                        <AuthButton buttonClassName={'ui inverted violet button'} />
+                        <AuthButton buttonClassName={'ui inverted blue button'} />
                     </p>
 
                 </div>
 
+
+                <div>
+                    <UsersList onItemClick={this.onItemClick} users={this.state.users} />
+                </div>
 
             </div>
         );
