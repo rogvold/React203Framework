@@ -38117,7 +38117,9 @@ var UserItem = React.createClass({displayName: "UserItem",
             borderBottom: '1px solid lightgrey',
             height: '50px',
             width: '100%',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            paddingTop: '2px',
+            paddingBottom: '2px'
         },
 
         avatarPlaceholder: {
@@ -38143,7 +38145,7 @@ var UserItem = React.createClass({displayName: "UserItem",
             display: 'inline-block',
             marginLeft: '5px',
             verticalAlign: 'top',
-            maxWidth: '100px'
+            maxWidth: '135px'
         }
 
 
@@ -38216,7 +38218,8 @@ var UsersList = React.createClass({displayName: "UsersList",
         placeholder: {
             width: '190px',
             borderLeft: '1px solid lightgrey',
-            borderRight: '1px solid lightgrey'
+            borderRight: '1px solid lightgrey',
+            borderTop: '1px solid lightgrey'
         }
     },
 

@@ -34,7 +34,9 @@ var UserItem = React.createClass({
             borderBottom: '1px solid lightgrey',
             height: '50px',
             width: '100%',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            paddingTop: '2px',
+            paddingBottom: '2px'
         },
 
         avatarPlaceholder: {
@@ -60,7 +62,7 @@ var UserItem = React.createClass({
             display: 'inline-block',
             marginLeft: '5px',
             verticalAlign: 'top',
-            maxWidth: '100px'
+            maxWidth: '135px'
         }
 
 

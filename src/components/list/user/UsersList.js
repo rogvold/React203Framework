@@ -31,7 +31,8 @@ var UsersList = React.createClass({
         placeholder: {
             width: '190px',
             borderLeft: '1px solid lightgrey',
-            borderRight: '1px solid lightgrey'
+            borderRight: '1px solid lightgrey',
+            borderTop: '1px solid lightgrey'
         }
     },
 
