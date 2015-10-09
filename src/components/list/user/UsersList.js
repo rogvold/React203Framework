@@ -30,7 +30,8 @@ var UsersList = React.createClass({
     componentStyle: {
         placeholder: {
             width: '190px',
-            borderLeft: '1px solid lightgrey'
+            borderLeft: '1px solid lightgrey',
+            borderRight: '1px solid lightgrey'
         }
     },
 
