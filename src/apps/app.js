@@ -11,6 +11,9 @@ var UsersList = require('../components/list/user/UsersList');
 
 var SabirData = require('../data/SabirData');
 
+var DialogClickableArea = require('../components/dialog/DialogClickableArea');
+
+
 var App = React.createClass({
     getDefaultProps: function () {
         return {
@@ -55,8 +58,20 @@ var App = React.createClass({
         });
     },
 
+    getDialogContent: function(){
+        return (
+            <div>
+
+                Hello, Dialog!
+            </div>
+
+        );
+    },
+
     render: function () {
         var users = SabirData.USERS_LIST;
+
+        var dialogContent = this.getDialogContent();
 
         return (
             <div style={this.componentStyle.placeholder}>
@@ -73,6 +88,14 @@ var App = React.createClass({
 
                 <div>
                     <UsersList onItemClick={this.onItemClick} users={this.state.users} />
+                </div>
+
+                <div>
+                 this is dialog example
+                    <DialogClickableArea content={dialogContent} >
+                        click me!
+                    </DialogClickableArea>
+
                 </div>
 
             </div>
