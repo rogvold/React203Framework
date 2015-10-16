@@ -5,21 +5,29 @@ var React = require('react');
 
 var AuthButton = require('../components/user/login/AuthButton');
 
-var UserItem = require('../components/list/user/UserItem');
+var Header = require('../components/header/Header');
 
-var UsersList = require('../components/list/user/UsersList');
+var EventItem = require('../components/card/EventItem');
 
-var SabirData = require('../data/SabirData');
+var EventsFeed = require('../components/card/EventsFeed');
+
+var IvanData = require('../data/IvanData.json');
+
+var SelfInitHeader = require('../components/headers/SelfInitHeader');
+
 
 var App = React.createClass({
     getDefaultProps: function () {
         return {
+            name: "Jazz events",
+            desc: "Here you can find recent jazz concerts and events near you",
+            img: './assets/img/ButmanTiny.jpg'
         }
     },
 
     getInitialState: function () {
         return {
-            users: []
+            events: []
         }
     },
 
@@ -29,7 +37,7 @@ var App = React.createClass({
 
     componentDidMount: function () {
         this.setState({
-            users: SabirData.USERS_LIST
+            events: IvanData
         });
     },
 
@@ -39,42 +47,20 @@ var App = React.createClass({
         }
     },
 
-
-    getModifiedList: function(name){
-        var list = this.state.users;
-        for (var i in list){
-            list[i].name = name;
-        }
-        return list;
-    },
-
-    onItemClick: function(index, name){
-        var newList = this.getModifiedList(name);
+    clear: function(){
         this.setState({
-            users: newList
+            users: []
         });
     },
 
     render: function () {
-        var users = SabirData.USERS_LIST;
-
         return (
-            <div style={this.componentStyle.placeholder}>
+            <div>
+                <Header name={this.props.name} desc={this.props.desc} img={this.props.img}></Header>
 
-                <div>
-
-                    <p>
-                        Это кнопка для авторизации
-                        <AuthButton buttonClassName={'ui inverted blue button'} />
-                    </p>
-
+                <div style={this.componentStyle.placeholder}>
+                    <EventsFeed events={this.state.events} />
                 </div>
-
-
-                <div>
-                    <UsersList onItemClick={this.onItemClick} users={this.state.users} />
-                </div>
-
             </div>
         );
     }

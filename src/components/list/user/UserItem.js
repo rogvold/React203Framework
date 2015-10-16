@@ -29,6 +29,10 @@ var UserItem = React.createClass({
 
     },
 
+    componentWillUnmount: function(){
+        console.log('unmounting: ', this.props);
+    },
+
     componentStyle: {
         placeholder: {
             borderBottom: '1px solid lightgrey',

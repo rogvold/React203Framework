@@ -8,6 +8,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var reactify = require('reactify');
 var uglify = require('gulp-uglify');
+//var semantic = require('semantic-ui');
 
 gulp.task('browserify', function(){
 
