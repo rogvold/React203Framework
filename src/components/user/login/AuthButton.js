@@ -9,7 +9,7 @@ var AuthButton = React.createClass({
         return {
             iconClassName: 'ui sign in icon',
             buttonClassName: 'ui inverted compact button',
-            buttonText: 'Вход',
+            buttonText: 'Log in',
             onLogin: function(){
                 window.location.href = window.location.href;
             }

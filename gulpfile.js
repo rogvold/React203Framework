@@ -18,11 +18,20 @@ gulp.task('browserify', function(){
         .pipe(source('app.js'))
         .pipe(gulp.dest('dist/js'));
 
+    browserify('./src/apps/app2.js')
+        .transform('reactify')
+        .bundle()
+        .pipe(source('app2.js'))
+        .pipe(gulp.dest('dist/js'));
+
 });
 
 gulp.task('copy', function(){
 
     gulp.src('src/index.html')
+        .pipe(gulp.dest('dist'));
+
+    gulp.src('src/index2.html')
         .pipe(gulp.dest('dist'));
 
     gulp.src('src/assets/**/*.*')

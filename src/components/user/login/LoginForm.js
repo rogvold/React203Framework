@@ -7,10 +7,10 @@ var LoginMixin = require('../../../mixins/LoginMixin');
 var LoginForm = React.createClass({
     getDefaultProps: function () {
         return {
-            buttonText: 'Войти',
+            buttonText: 'Log in',
             emailPlaceholder: 'Email',
-            passwordPlaceholder: 'Пароль',
-            formName: 'Вход',
+            passwordPlaceholder: 'Password',
+            formName: 'Log in',
             onLogin: function(u){
                 console.log('onLogin occured: u = ', u);
             }
