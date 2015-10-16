@@ -8,7 +8,7 @@ var AuthButton = React.createClass({
     getDefaultProps: function () {
         return {
             iconClassName: 'ui sign in icon',
-            buttonClassName: 'ui inverted compact button',
+            buttonClassName: 'ui inverted button',
             buttonText: 'Log in',
             onLogin: function(){
                 window.location.href = window.location.href;

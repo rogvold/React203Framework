@@ -30,22 +30,22 @@ var Header = React.createClass({
     componentStyle: {
         placeholder: {
             width: '100%',
-            height: 500,
+            height: 420,
             backgroundSize: 'cover'
         },
 
         NameDesc: {
             color: 'white',
             width: '100%',
-            top: 250,
+            top: 150,
             position: 'absolute',
             zIndex: 2
         },
 
         overlayPanel: {
             position: 'absolute',
-            height: 500,
-            top: 0,
+            height: 420,
+            top: 50,
             right: 0,
             bottom: 0,
             left: 0,
@@ -73,7 +73,7 @@ var Header = React.createClass({
                     <div style={this.componentStyle.topPlaceholder} >
                         <div style={{fontSize: 50}}>{this.props.name}</div>
 
-                        <div style={{fontSize: 25}}>{this.props.desc}</div>
+                        <div style={{fontSize: 25, width: 450}}>{this.props.desc}</div>
 
                         {this.props.content == undefined ? null :
                             <div>{this.props.content}</div>

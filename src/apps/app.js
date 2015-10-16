@@ -16,14 +16,10 @@ var IvanData = require('../data/IvanData.json');
 var SelfInitHeader = require('../components/headers/SelfInitHeader');
 
 
-var DialogClickableArea = require('../components/dialog/DialogClickableArea');
-
-
-
 var App = React.createClass({
     getDefaultProps: function () {
         return {
-            name: "Jazz events",
+            name: "Jazz Locate",
             desc: "Here you can find recent jazz concerts and events near you",
             img: './assets/img/ButmanTiny.jpg'
         }
@@ -57,48 +53,16 @@ var App = React.createClass({
         });
     },
 
-    getDialogContent: function(){
-        return (
-            <div>
-
-                Hello, Dialog!
-            </div>
-
-        );
-    },
-
     render: function () {
-<<<<<<< HEAD
-=======
-        var users = SabirData.USERS_LIST;
-
-        var dialogContent = this.getDialogContent();
-
->>>>>>> c1a7739bb36eaa4b7c33ae4dba0ed3a4741e70af
         return (
             <div>
+                <SelfInitHeader logo={'http://beta.englishpatient.org/img/tsu_logo.png'} logoText={'Jazz Locate'}  />
+
                 <Header name={this.props.name} desc={this.props.desc} img={this.props.img}></Header>
 
                 <div style={this.componentStyle.placeholder}>
                     <EventsFeed events={this.state.events} />
                 </div>
-<<<<<<< HEAD
-=======
-
-
-                <div>
-                    <UsersList onItemClick={this.onItemClick} users={this.state.users} />
-                </div>
-
-                <div>
-                 this is dialog example
-                    <DialogClickableArea content={dialogContent} >
-                        click me!
-                    </DialogClickableArea>
-
-                </div>
-
->>>>>>> c1a7739bb36eaa4b7c33ae4dba0ed3a4741e70af
             </div>
         );
     }
@@ -109,4 +73,3 @@ React.render(
     <App />,
     document.getElementById('main')
 );
-

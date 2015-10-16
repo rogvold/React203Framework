@@ -19169,11 +19169,7 @@ $def($def.S, 'Object', {setPrototypeOf: require('./$.set-proto').set});
 
       var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
         return function(evt) {
-          if (evt.stopImmediatePropagation) {
-            evt.stopImmediatePropagation();
-          } else {
-            evt.stopPropagation();
-          }
+          evt.stopPropagation();
           var source = evt.target;
           var found = false;
           // If source=local then this event came from "somewhere"
@@ -38203,7 +38199,7 @@ var App = React.createClass({displayName: "App",
 
         return (
             React.createElement("div", {style: this.componentStyle.placeholder}, 
-                React.createElement(SelfInitHeader, {logo: 'http://beta.englishpatient.org/img/tsu_logo.png', logoText: 'Tomsk State University'})
+                React.createElement(SelfInitHeader, {logo: 'http://beta.englishpatient.org/img/tsu_logo.png', logoText: 'Jazz Locate'})
 
             )
         );
@@ -39265,6 +39261,10 @@ var UserItem = React.createClass({displayName: "UserItem",
 
     },
 
+    componentWillUnmount: function(){
+        console.log('unmounting: ', this.props);
+    },
+
     componentStyle: {
         placeholder: {
             borderBottom: '1px solid lightgrey',
@@ -39415,7 +39415,7 @@ var AuthButton = React.createClass({displayName: "AuthButton",
     getDefaultProps: function () {
         return {
             iconClassName: 'ui sign in icon',
-            buttonClassName: 'ui inverted compact button',
+            buttonClassName: 'ui inverted button',
             buttonText: 'Log in',
             onLogin: function(){
                 window.location.href = window.location.href;
@@ -40105,9 +40105,6 @@ var SignupForm = React.createClass({displayName: "SignupForm",
 module.exports = SignupForm;
 
 },{"../../../mixins/LoginMixin":255,"react":234}],253:[function(require,module,exports){
-/**
- * Created by sabir on 09.10.15.
- */
 
 var Constants = {
     PARSE_APP_ID: 'pfI7pmkqH74maQv9H2DsbygXVv0H2QaAZGFFyY8o',
