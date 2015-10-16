@@ -38122,6 +38122,9 @@ module.exports = require('./lib/React');
 
 },{"./lib/React":103}],235:[function(require,module,exports){
 /**
+ * Created by sabir on 16.10.15.
+ */
+/**
  * Created by sabir on 09.10.15.
  */
 var React = require('react');
@@ -38136,6 +38139,7 @@ var SabirData = require('../data/SabirData');
 
 var DialogClickableArea = require('../components/dialog/DialogClickableArea');
 
+var SelfInitHeader = require('../components/headers/SelfInitHeader');
 
 
 var App = React.createClass({displayName: "App",
@@ -38199,28 +38203,7 @@ var App = React.createClass({displayName: "App",
 
         return (
             React.createElement("div", {style: this.componentStyle.placeholder}, 
-
-                React.createElement("div", null, 
-
-                    React.createElement("p", null, 
-                        "Это кнопка для авторизации", 
-                        React.createElement(AuthButton, {buttonClassName: 'ui inverted blue button'})
-                    )
-
-                ), 
-
-
-                React.createElement("div", null, 
-                    React.createElement(UsersList, {onItemClick: this.onItemClick, users: this.state.users})
-                ), 
-
-                React.createElement("div", null, 
-                 "this is dialog example", 
-                    React.createElement(DialogClickableArea, {content: dialogContent}, 
-                        "click me!"
-                    )
-
-                )
+                React.createElement(SelfInitHeader, {logo: 'http://beta.englishpatient.org/img/tsu_logo.png', logoText: 'Tomsk State University'})
 
             )
         );
@@ -38233,7 +38216,7 @@ React.render(
     document.getElementById('main')
 );
 
-},{"../components/dialog/DialogClickableArea":237,"../components/list/user/UserItem":240,"../components/list/user/UsersList":241,"../components/user/login/AuthButton":242,"../data/SabirData":248,"react":234}],236:[function(require,module,exports){
+},{"../components/dialog/DialogClickableArea":237,"../components/headers/SelfInitHeader":245,"../components/list/user/UserItem":246,"../components/list/user/UsersList":247,"../components/user/login/AuthButton":248,"../data/SabirData":254,"react":234}],236:[function(require,module,exports){
 /**
  * Created by sabir on 10.10.15.
  */
@@ -38665,6 +38648,593 @@ module.exports = DialogPanel;
 
 },{"object-assign":3,"react":234,"react-onclickoutside":79}],240:[function(require,module,exports){
 /**
+ * Created by sabir on 12.08.15.
+ */
+var React = require('react');
+
+var CurrentUserDropdownItem = React.createClass({displayName: "CurrentUserDropdownItem",
+    getDefaultProps: function () {
+        return {
+            name: 'N/A',
+            icon: ' icon plane ',
+            onClick: {
+
+            }
+        }
+    },
+
+    getInitialState: function () {
+        return {}
+    },
+
+    _onClick: function(){
+        this.props.onClick();
+    },
+
+    componentStyle: {
+        placeholder: {
+            padding: 10,
+            //backgroundColor: 'whitesmoke',
+            border: '1px solid lightgray',
+            borderBottom: 'none',
+            borderTop: 'none',
+            minWidth: 120
+        }
+    },
+
+    render: function () {
+        return (
+            React.createElement("div", {className: 'currentUserDropdownItem', style: this.componentStyle.placeholder, onClick: this._onClick}, 
+                React.createElement("i", {className: this.props.icon}), 
+                this.props.name
+            )
+        );
+    }
+
+});
+
+module.exports = CurrentUserDropdownItem;
+
+},{"react":234}],241:[function(require,module,exports){
+/**
+ * Created by sabir on 12.08.15.
+ */
+
+var React = require('react');
+var CurrentUserDropdownItem = require('./CurrentUserDropdownItem');
+var CurrentUserPanel = require('./CurrentUserPanel');
+var assign = require('object-assign');
+
+var CurrentUserHeaderDropdown = React.createClass({displayName: "CurrentUserHeaderDropdown",
+    getDefaultProps: function () {
+        return {
+            user: undefined,
+            links: [
+                {
+                    name: 'N/A',
+                    onClick: function(){
+                        alert('n/a clicked');
+                    }
+                }
+            ],
+            onLinkClick: function(num){
+                console.log('link[' + num + '] clicked');
+            }
+        }
+    },
+
+    getInitialState: function () {
+        return {
+            dropdownVisible: false
+        }
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentDidMount: function () {
+
+    },
+
+    componentStyle: {
+        placeholder: {
+            //backgroundColor: 'red',
+
+        },
+        currentUserPanelPlaceholder:{
+            cursor: 'pointer',
+            zIndex: 10
+        },
+
+        dropdownPlaceholder: {
+            display: 'block',
+            borderBottom: '1px solid lightgray',
+            backgroundColor: 'whitesmoke'
+        }
+    },
+
+    itemClicked: function(a, b){
+        var num = +a;
+        //console.log(a, b);
+        //this.props.links[num].onClick();
+        this.props.onLinkClick(num);
+    },
+
+    currentUserClicked: function(){
+        this.setState({
+            dropdownVisible: !this.state.dropdownVisible
+        });
+    },
+
+    render: function () {
+
+        return (
+            React.createElement("div", {style: this.componentStyle.placeholder}, 
+                this.props.user == undefined ?
+                    (React.createElement("div", null
+
+                    ))
+                    :
+                    (React.createElement("div", {style: this.componentStyle.currentUserPanelPlaceholder}, 
+                        React.createElement(CurrentUserPanel, {onClick: this.currentUserClicked, name: this.props.user.name, avatar: this.props.user.avatar}), 
+
+                        React.createElement("div", {style: assign({}, this.componentStyle.dropdownPlaceholder, {display: (this.state.dropdownVisible == false ? ' none ' : this.componentStyle.dropdownPlaceholder.display) })}, 
+                            this.props.links.map(function(item, i){
+                                var key =  i;
+                                var boundClick = this.itemClicked.bind(this, key);
+                                return (
+                                    React.createElement(CurrentUserDropdownItem, {key: key, onClick: boundClick, name: item.name, icon: item.icon})
+                                );
+                            }, this)
+                        )
+
+                    ))
+
+                
+            )
+        );
+    }
+
+});
+
+module.exports = CurrentUserHeaderDropdown;
+
+},{"./CurrentUserDropdownItem":240,"./CurrentUserPanel":242,"object-assign":3,"react":234}],242:[function(require,module,exports){
+/**
+ * Created by sabir on 12.08.15.
+ */
+var React = require('react');
+
+var CurrentUserPanel = React.createClass({displayName: "CurrentUserPanel",
+    getDefaultProps: function () {
+        return {
+            isVisible: true,
+            avatar: 'http://2i.tusur.ru/media/images/Lirmak_1.jpg',
+            name: '',
+            onClick: function(){
+                console.log('user panel clicked');
+            }
+        }
+    },
+
+
+    componentStyle: {
+        avatar: {
+            verticalAlign: 'top',
+            marginTop: 10,
+            borderRadius: 100,
+            width: 32,
+            height: 32,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: 'white',
+            borderStyle: 'solid'
+        },
+        placeholder: {
+            display: 'inline-block',
+            cursor: 'pointer',
+            color: 'white',
+            fontSize: 16,
+            textAlign: 'right',
+            minWidth: 120,
+            marginBottom: 5
+        }
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentDidMount: function () {
+
+    },
+
+    render: function () {
+
+        return (
+            React.createElement("div", {className: 'currentUserPanel', onClick: this.props.onClick, style: this.componentStyle.placeholder}, 
+                React.createElement("div", {style: {color: 'white', display: 'inline-block', fontSize: 16, marginRight: 10, paddingTop: 12}}, this.props.name), 
+                React.createElement("img", {style: this.componentStyle.avatar, src: this.props.avatar})
+            )
+        );
+    }
+
+});
+
+module.exports = CurrentUserPanel;
+
+},{"react":234}],243:[function(require,module,exports){
+/**
+ * Created by sabir on 11.08.15.
+ */
+var React = require('react');
+
+var HeaderLinkItem = React.createClass({displayName: "HeaderLinkItem",
+    getDefaultProps: function () {
+        return {
+            name: 'N/A',
+            url: '#',
+            icon: ' icon plane ',
+            active: false
+        }
+    },
+
+    getInitialState: function () {
+        return {}
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentStyle: {
+        item:{
+            display: 'inline-block',
+            marginLeft: 10,
+            fontSize: 16
+        },
+        link:{
+            color: 'white'
+        }
+    },
+
+    componentDidMount: function () {
+
+    },
+
+    render: function () {
+
+        return (
+            React.createElement("div", {style: this.componentStyle.item}, 
+                React.createElement("a", {href: this.props.url, style: this.componentStyle.link}, 
+                    this.props.icon == undefined || this.props.icon == '' ?
+                        (React.createElement("i", null)) : (React.createElement("i", {className: this.props.icon})), 
+                    
+                    this.props.name
+                )
+            )
+        );
+    }
+
+});
+
+module.exports = HeaderLinkItem;
+
+},{"react":234}],244:[function(require,module,exports){
+/**
+ * Created by sabir on 10.08.15.
+ */
+var React = require('react');
+var assign = require('object-assign');
+var HeaderLinkItem = require('./HeaderLinkItem');
+var CurrentUserPanel = require('./CurrentUserPanel');
+var CurrentUserHeaderDropdown = require('./CurrentUserHeaderDropdown');
+
+
+var HeaderPanel = React.createClass({displayName: "HeaderPanel",
+    getDefaultProps: function () {
+        return {
+            logo: 'http://beta.englishpatient.org/home/img/logo_mini.png',
+            logoText: 'English Patient',
+
+            extraLogo: undefined,
+            extraLogoText: undefined,
+
+            backgroundColor: '#45619D',
+            links: [{
+                name: 'defaultLink',
+                url: 'javascript: void(0);',
+                icon : ''
+            }],
+            dropdownLinks: [
+                {
+                    name: 'N/A',
+                    onClick: function(){
+                        alert('n/a clicked');
+                    }
+                }
+            ],
+            logoClicked: function(){
+                console.log('logo clicked');
+            },
+            isLoggedIn: false,
+            user: undefined,
+            //user: {
+            //    name: 'sabir',
+            //    avatar: 'http://2i.tusur.ru/media/images/Lirmak_1.jpg'
+            //},
+            customHeaderComponent: undefined,
+            loginLinkName: 'Вход',
+            loginLinkVisible: true,
+
+            onLoginClick: function(){
+                console.log('onLoginClick occured');
+            },
+            onDropdownLinkClick: function(num){
+                console.log('HeaderPanel: onDropdownLinkClick: num = ', num);
+            },
+            customLoginButtonComponent: undefined
+        }
+    },
+
+    getInitialState: function () {
+        return {}
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    componentStyle: {
+        headerPlaceholder: {
+            width: '100%',
+            top: 0,
+            height: 50
+        },
+
+        header: {
+            //width: 900,
+            maxWidth: 851,
+            paddingLeft: 5,
+            margin: '0 auto',
+            height: 50,
+            position: 'relative'
+        },
+
+        logoPlaceholder: {
+            //width: 180,
+            cursor: 'pointer',
+            display: 'inline-block'
+        },
+
+        logoTextPlaceholder: {
+            color: 'white',
+            display: 'inline-block',
+            marginLeft: 10,
+            fontSize: 18,
+            verticalAlign: 'top',
+            marginTop: 15
+
+        },
+
+        logoImg: {
+            height: 30,
+            verticalAlign: 'bottom',
+            marginTop: 10,
+            display: 'inline-block'
+        },
+
+        linksPlaceholder: {
+            display: 'inline-block',
+            verticalAlign: 'top',
+            marginTop: 15,
+            marginLeft: 30,
+            zIndex: 10
+        },
+
+        currentUserPlaceholder: {
+            display: 'inline-block',
+            position: 'absolute',
+            //top: 15,
+            right: 15,
+            zIndex: 10
+        },
+
+        customHeaderComponentPlaceholder: {
+            display: 'inline-block',
+            marginLeft: 15
+        },
+
+        customHeaderComponentPlaceholder: {
+            display: 'inline-block',
+            padding: 10
+        },
+
+        loginLink: {
+            marginTop: 10,
+            marginRight: -10
+        }
+
+    },
+
+    onLoginClick: function(){
+        this.props.onLoginClick();
+    },
+
+    componentDidMount: function () {
+
+    },
+
+    onDropdownLinkClick: function(num){
+        console.log('onDropdownLinkClick occured');
+        this.props.onDropdownLinkClick(num);
+    },
+
+    logoClicked: function(){
+        this.props.logoClicked();
+    },
+
+    render: function () {
+        console.log('HeaderPanel render: this.props.user = ', this.props.user, 'isLoggedIn = ', this.props.isLoggedIn);
+        return (
+            React.createElement("div", {style: assign({}, this.componentStyle.headerPlaceholder, {backgroundColor: this.props.backgroundColor})}, 
+                React.createElement("div", {style: this.componentStyle.header}, 
+
+                    React.createElement("div", {style: this.componentStyle.logoPlaceholder, onClick: this.logoClicked}, 
+                        React.createElement("img", {src: this.props.logo, style: this.componentStyle.logoImg}), 
+                        React.createElement("div", {style: this.componentStyle.logoTextPlaceholder}, 
+                            this.props.logoText
+                        ), 
+
+                        this.props.extraLogo == undefined ? null :
+                            React.createElement("div", {style: {marginLeft: 20, display: 'inline-block'}}, 
+                                React.createElement("img", {src: this.props.extraLogo, style: this.componentStyle.logoImg}), 
+                                React.createElement("div", {style: this.componentStyle.logoTextPlaceholder}, 
+                                    this.props.extraLogoText == undefined ? null : this.props.extraLogoText
+                                )
+                            )
+                        
+
+
+
+                    ), 
+
+                    React.createElement("div", {style: assign({}, this.componentStyle.customHeaderComponentPlaceholder, {display: (this.props.customHeaderComponent == undefined ? ' none ' : this.componentStyle.customHeaderComponentPlaceholder.display ) })}, 
+                        this.props.customHeaderComponent
+                    ), 
+
+                    React.createElement("div", {style: assign({}, this.componentStyle.linksPlaceholder, {display: (this.props.links.length == 0 ? ' none ' : this.componentStyle.linksPlaceholder.display) })}, 
+                        this.props.links.map(function(link, i){
+                            var key = 'link_' + i;
+                            return React.createElement(HeaderLinkItem, {icon: link.icon, name: link.name, url: link.url})
+                        })
+                    ), 
+
+                    React.createElement("div", {style: assign({}, this.componentStyle.currentUserPlaceholder)}, 
+                        this.props.isLoggedIn == false ?
+                            (
+                                React.createElement("div", {style: this.componentStyle.loginLink}, 
+                                    this.props.customLoginButtonComponent == undefined ?
+                                        React.createElement("a", {className: 'ui inverted compact button', href: "javascript: void(0);", onClick: this.onLoginClick}, 
+                                            React.createElement("i", {className: 'ui sign in icon'}), " ", this.props.loginLinkName
+                                        )
+                                            :
+                                        this.props.customLoginButtonComponent
+                                    
+                                )
+                                ) :
+                            (React.createElement(CurrentUserHeaderDropdown, {onLinkClick: this.onDropdownLinkClick, links: this.props.dropdownLinks, user: this.props.user}))
+                        
+                    )
+
+                )
+            )
+        );
+    }
+
+});
+
+module.exports = HeaderPanel;
+
+},{"./CurrentUserHeaderDropdown":241,"./CurrentUserPanel":242,"./HeaderLinkItem":243,"object-assign":3,"react":234}],245:[function(require,module,exports){
+/**
+ * Created by sabir on 02.10.15.
+ */
+var React = require('react');
+
+//var HeaderPanel = require('../../../react/commonComponents/headers/HeaderPanel');
+var HeaderPanel = require('./HeaderPanel');
+var AuthButton = require('../user/login/AuthButton');
+
+var Parse = require('parse').Parse;
+var ParseMixin = require('../../mixins/ParseMixin');
+
+
+var SelfInitHeader = React.createClass({displayName: "SelfInitHeader",
+    getDefaultProps: function () {
+        return {
+            links: [],
+            logo: 'http://beta.englishpatient.org/home/img/logo_mini.png',
+            logoText: 'English Patient',
+            dropdownLinks: [{
+                name: 'Выход',
+                icon: 'ui sign out icon',
+                onClick: function(){
+                    Parse.User.logOut().then(function(){
+                        window.location.href = window.location.href;
+                    });
+                }
+            }],
+            extraLogo: undefined,
+            extraLogoText: undefined
+        }
+    },
+
+    getInitialState: function () {
+        return {
+            user: undefined
+        }
+    },
+
+    initCurrentUser: function(){
+        var u = Parse.User.current();
+        if (u != undefined){
+            var firstName = u.get('firstName');
+            var lastName = u.get('lastName');
+            var name = (firstName == undefined ? '' : firstName) + ' ' + (lastName == undefined ? '' : lastName);
+            if (name == ' '){
+                name = u.get('email');
+            }
+            this.setState({
+                user: {
+                    name: name,
+                    avatar: u.get('avatar')
+                }
+            });
+        }
+
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+
+    },
+
+    onDropdownLinkClick: function(num){
+        var ls = this.props.dropdownLinks;
+        if ( ls!= undefined && ls.length > num ){
+            ls[num].onClick();
+        }
+    },
+
+    componentDidMount: function () {
+        ParseMixin.initParse();
+        this.initCurrentUser();
+    },
+
+    componentStyle: {
+        placeholder: {}
+    },
+
+    render: function () {
+        var isLoggedIn = (this.state.user != undefined);
+        return (
+            React.createElement("div", {style: this.componentStyle.placeholder}, 
+                React.createElement(HeaderPanel, {extraLogo: this.props.extraLogo, extraLogoText: this.props.extraLogoText, 
+                             logo: this.props.logo, logoText: this.props.logoText, 
+                             onDropdownLinkClick: this.onDropdownLinkClick, dropdownLinks: this.props.dropdownLinks, 
+                             isLoggedIn: isLoggedIn, user: this.state.user, links: this.props.links, 
+                             customLoginButtonComponent: React.createElement(AuthButton, null)})
+            )
+        );
+    }
+
+});
+
+module.exports = SelfInitHeader;
+
+},{"../../mixins/ParseMixin":256,"../user/login/AuthButton":248,"./HeaderPanel":244,"parse":4,"react":234}],246:[function(require,module,exports){
+/**
  * Created by sabir on 09.10.15.
  */
 var React = require('react');
@@ -38767,7 +39337,7 @@ var UserItem = React.createClass({displayName: "UserItem",
 
 module.exports = UserItem;
 
-},{"react":234}],241:[function(require,module,exports){
+},{"react":234}],247:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -38834,7 +39404,7 @@ var UsersList = React.createClass({displayName: "UsersList",
 
 module.exports = UsersList;
 
-},{"./UserItem":240,"react":234}],242:[function(require,module,exports){
+},{"./UserItem":246,"react":234}],248:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -38905,7 +39475,7 @@ var AuthButton = React.createClass({displayName: "AuthButton",
 
 module.exports = AuthButton;
 
-},{"./AuthOverlay":244,"react":234}],243:[function(require,module,exports){
+},{"./AuthOverlay":250,"react":234}],249:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -39043,7 +39613,7 @@ var AuthForm = React.createClass({displayName: "AuthForm",
 
 module.exports = AuthForm;
 
-},{"./LoginForm":245,"./SignupForm":246,"react":234}],244:[function(require,module,exports){
+},{"./LoginForm":251,"./SignupForm":252,"react":234}],250:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -39140,7 +39710,7 @@ var AuthOverlay = React.createClass({displayName: "AuthOverlay",
 
 module.exports = AuthOverlay;
 
-},{"./AuthForm":243,"object-assign":3,"react":234}],245:[function(require,module,exports){
+},{"./AuthForm":249,"object-assign":3,"react":234}],251:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -39302,7 +39872,7 @@ var LoginForm = React.createClass({displayName: "LoginForm",
 
 module.exports = LoginForm;
 
-},{"../../../mixins/LoginMixin":249,"react":234}],246:[function(require,module,exports){
+},{"../../../mixins/LoginMixin":255,"react":234}],252:[function(require,module,exports){
 /**
  * Created by sabir on 02.10.15.
  */
@@ -39534,7 +40104,7 @@ var SignupForm = React.createClass({displayName: "SignupForm",
 
 module.exports = SignupForm;
 
-},{"../../../mixins/LoginMixin":249,"react":234}],247:[function(require,module,exports){
+},{"../../../mixins/LoginMixin":255,"react":234}],253:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -39547,7 +40117,7 @@ var Constants = {
 
 module.exports = Constants;
 
-},{}],248:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -39579,7 +40149,7 @@ var SabirData = {
 
 module.exports = SabirData;
 
-},{}],249:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -39657,7 +40227,7 @@ var LoginMixin = {
 
 module.exports = LoginMixin;
 
-},{"./ParseMixin":250,"parse":4,"react":234}],250:[function(require,module,exports){
+},{"./ParseMixin":256,"parse":4,"react":234}],256:[function(require,module,exports){
 /**
  * Created by sabir on 09.10.15.
  */
@@ -39763,4 +40333,4 @@ var ParseMixin = {
 
 module.exports = ParseMixin;
 
-},{"../constants/Constants":247,"jquery":2,"parse":4}]},{},[235]);
+},{"../constants/Constants":253,"jquery":2,"parse":4}]},{},[235]);

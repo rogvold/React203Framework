@@ -1,4 +1,7 @@
 /**
+ * Created by sabir on 16.10.15.
+ */
+/**
  * Created by sabir on 09.10.15.
  */
 var React = require('react');
@@ -13,6 +16,7 @@ var SabirData = require('../data/SabirData');
 
 var DialogClickableArea = require('../components/dialog/DialogClickableArea');
 
+var SelfInitHeader = require('../components/headers/SelfInitHeader');
 
 
 var App = React.createClass({
@@ -76,28 +80,7 @@ var App = React.createClass({
 
         return (
             <div style={this.componentStyle.placeholder}>
-
-                <div>
-
-                    <p>
-                        Это кнопка для авторизации
-                        <AuthButton buttonClassName={'ui inverted blue button'} />
-                    </p>
-
-                </div>
-
-
-                <div>
-                    <UsersList onItemClick={this.onItemClick} users={this.state.users} />
-                </div>
-
-                <div>
-                 this is dialog example
-                    <DialogClickableArea content={dialogContent} >
-                        click me!
-                    </DialogClickableArea>
-
-                </div>
+                <SelfInitHeader logo={'http://beta.englishpatient.org/img/tsu_logo.png'} logoText={'Jazz Locate'}  />
 
             </div>
         );

@@ -98,26 +98,26 @@ var AuthForm = React.createClass({
                             ?
                             <div>
                                 <span style={this.componentStyle.togglerLabel}>
-                                    Еще не зарегистрированы?
+                                    Not registered?
                                 </span>
 
                                 <br/>
                                 <span onClick={this.toggle} style={this.componentStyle.toggler}>
                                     <button style={this.componentStyle.togglerButton} className={' ui blue basic button '} >
-                                        Регистрация
+                                        Registration
                                     </button>
                                 </span>
                             </div>
                             :
                             <div>
                                 <span style={this.componentStyle.togglerLabel}>
-                                    Уже зарегистрированы?
+                                    Have an account?
                                 </span>
 
                                 <br/>
                                 <span onClick={this.toggle} style={this.componentStyle.toggler}>
                                     <button style={this.componentStyle.togglerButton}  className={' ui blue basic button '} >
-                                        Вход
+                                        Log in
                                     </button>
                                 </span>
                             </div>
